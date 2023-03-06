@@ -109,6 +109,7 @@ def runTuberculosis():
 
 s2Q.makeTable()
 
+
 runMeasles()
 runMalaria()
 runMumps()

@@ -5,12 +5,18 @@ Passing data into my MySQL Database
 
 
 def send(data, date, name):
+    '''
+    THIS IS THE DATA YOU NEED TO UPDATE
+    '''
+    user = '@@'
+    passwrd = '@@'
+    database = '@@'
     # configuration data for logging in
     config = {
-        'user': 'root',
-        'password': 'Protein44@@',
+        'user': f'{user}',
+        'password': f'{passwrd}',
         'host': '127.0.0.1',
-        'database': 'dd',
+        'database': f'{database}',
         'raise_on_warnings': True
     }
 
@@ -40,7 +46,12 @@ def makeTable():
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
 
-    cursor.execute('DROP TABLE wondertables')
+    # cursor.execute('DROP TABLE wondertables')
     cursor.execute(
         "CREATE TABLE wondertables (disease VARCHAR(30), date VARCHAR(10), state VARCHAR(45), current_week VARCHAR(5), previous_52 VARCHAR(8));")
+    cnx.commit()
+
+    # cursor.execute('DROP TABLE coviddata')
+    cursor.execute(
+        "CREATE TABLE coviddata (disease VARCHAR(30), date VARCHAR(10), state VARCHAR(45), current_cases VARCHAR(5));")
     cnx.commit()

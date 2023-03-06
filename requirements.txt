@@ -1,2 +1,2 @@
-beautifulsoup>=4.11.2
-mysql-connector-python==8.0.32
+beautifulsoup4
+mysql-connector-python
