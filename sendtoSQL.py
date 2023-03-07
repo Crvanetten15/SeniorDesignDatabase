@@ -9,7 +9,7 @@ def send(data, date, name):
     THIS IS THE DATA YOU NEED TO UPDATE
     '''
     user = 'root'
-    passwrd = 'Protein44@@'
+    passwrd = 'pass'
     database = 'dd'
     # configuration data for logging in
     config = {
@@ -37,7 +37,7 @@ def makeTable():
     # configuration data for logging in
 
     user = 'root'
-    passwrd = 'Protein44@@'
+    passwrd = '@@'
     database = 'dd'
     config = {
         'user': f'{user}',
