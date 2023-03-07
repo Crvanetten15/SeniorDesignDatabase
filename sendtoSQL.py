@@ -8,9 +8,9 @@ def send(data, date, name):
     '''
     THIS IS THE DATA YOU NEED TO UPDATE
     '''
-    user = '@@'
-    passwrd = '@@'
-    database = '@@'
+    user = 'root'
+    passwrd = 'Protein44@@'
+    database = 'dd'
     # configuration data for logging in
     config = {
         'user': f'{user}',
@@ -35,11 +35,15 @@ def send(data, date, name):
 
 def makeTable():
     # configuration data for logging in
+
+    user = 'root'
+    passwrd = 'Protein44@@'
+    database = 'dd'
     config = {
-        'user': 'root',
-        'password': 'Protein44@@',
+        'user': f'{user}',
+        'password': f'{passwrd}',
         'host': '127.0.0.1',
-        'database': 'dd',
+        'database': f'{database}',
         'raise_on_warnings': True
     }
 
