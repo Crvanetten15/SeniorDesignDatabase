@@ -29,7 +29,7 @@ def parse_table(table, col1, col2):
         if len(columns) > 0:
             current_week = \
                 columns[col1].text.strip(
-                ) if columns[col1].text.strip() != '-' else '~0'
+                ) if columns[col1].text.strip() != '-' else '0'
             previous52 = columns[col2].text.strip()
             data.append([state.text, current_week, previous52])
         data = sorted(data, key=lambda x: x[0])
@@ -107,12 +107,47 @@ def runTuberculosis():
         s2Q.send(data, date[0], 'Tuberculosis')
 
 
-s2Q.makeTable()
+def runCovid():
+    import requests
+    import csv
+
+    url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv'
+
+    response = requests.get(url)
+    reader = csv.reader(response.text.strip().split('\n'))
+    days = []
+    for row in reader:
+        day = row[0:2] + row[3:]
+        days.append(day)
+    print(days[:7])
 
 
-runMeasles()
-runMalaria()
-runMumps()
-runPneumococcal()
-runCSyphilis()
-runTuberculosis()
+def runIndividual(url, name):
+    data = parse_table(give_url(url), 1, 2)
+    date = re.findall("2022-..", url)
+
+    s2Q.send(data, date[0], f'{name}')
+
+
+def buildDB():
+    s2Q.makeTable()
+    runMeasles()
+    runMalaria()
+    runMumps()
+    runPneumococcal()
+    runCSyphilis()
+    runTuberculosis()
+
+
+runCovid()
+exit()
+
+# s2Q.makeTable()
+
+
+# runMeasles()
+# runMalaria()
+# runMumps()
+# runPneumococcal()
+# runCSyphilis()
+# runTuberculosis()
