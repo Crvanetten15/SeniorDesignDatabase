@@ -1,17 +1,19 @@
 import mysql.connector
+
+from decouple import config
+
 '''
 Passing data into my MySQL Database
 '''
-
+user = config('USER')
+passwrd = config('PASSWRD')
+database = config('DATABASE')
+host = config('HOST')
 
 def send(data, date, name):
     '''
     THIS IS THE DATA YOU NEED TO UPDATE
     '''
-    user = 'adminroot'
-    passwrd = 'Passw0rd'
-    database = 'seniordesign'
-    host = 'seniordesign.mysql.database.azure.com'
     # configuration data for logging in
     config = {
         'user': f'{user}',
@@ -27,13 +29,13 @@ def send(data, date, name):
     for _ in data:
         sql = \
             """
-        INSERT INTO weekly_data (disease_name, year, week, disease_cases, state) VALUES
-            (%s, %s, %s, %s, %s)
+        INSERT INTO weekly_data (disease_name, year, week, disease_cases, disease_deaths, state) VALUES
+            (%s, %s, %s, %s, %s, %s)
         """
         year, week = map(int, date.split('-'))
         if _[1] == 'NC':
             _[1] = 0
-        val = (name, year, week, _[1], _[0])
+        val = (name, year, week, _[1], 0, _[0])
         cursor.execute(sql, val)
         cnx.commit()
 
@@ -42,11 +44,6 @@ def send(data, date, name):
 
 def makeTable():
     # configuration data for logging in
-
-    user = 'adminroot'
-    passwrd = 'Passw0rd'
-    database = 'seniordesign'
-    host = 'seniordesign.mysql.database.azure.com'
     config = {
         'user': f'{user}',
         'password': f'{passwrd}',
@@ -66,6 +63,7 @@ def makeTable():
             year INT NOT NULL,
             week INT NOT NULL,
             disease_cases INT NOT NULL,
+            disease_deaths INT NOT NULL,
             state VARCHAR(50) NOT NULL
             );
         """)

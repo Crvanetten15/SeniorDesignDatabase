@@ -107,20 +107,6 @@ def runTuberculosis():
         s2Q.send(data, date[0], 'Tuberculosis')
 
 
-def runCovid():
-    import requests
-    import csv
-
-    url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv'
-
-    response = requests.get(url)
-    reader = csv.reader(response.text.strip().split('\n'))
-    days = []
-    for row in reader:
-        day = row[0:2] + row[3:]
-        days.append(day)
-    print(days[:7])
-
 
 def runIndividual(url, name):
     data = parse_table(give_url(url), 1, 2)
@@ -139,7 +125,7 @@ def buildDB():
     runTuberculosis()
 
 
-runCovid()
+
 exit()
 
 # s2Q.makeTable()
