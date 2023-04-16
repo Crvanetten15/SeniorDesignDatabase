@@ -34,7 +34,7 @@ def makeTable():
     cnx.commit()
 
 
-def Send_Covid(data):
+def Send_Covid_daily(data):
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
     for _ in data:
@@ -88,15 +88,15 @@ def runCovid():
     #         previous = days[_ + 1][1]
     # DataByDay = temp
 
-    for _ in days:
-        Send_Covid(_)
-        
+    # for _ in days:
+    #     Send_Covid_daily(_)
 
-    for _ in DataByDay:
-        for __ in _:
-            week = get_week_number(__[1])
-            print(__[0], __[1][:4], week, __[2], __[3], __[4])
-        print()
+    days_with_week = []
+    for _ in range(len(days)):
+        temp = ['covid', days[_][1][:4], get_week_number(
+            days[_][1]), days[_][2], days[_][3], days[_][4]]
+        days_with_week.append(temp)
+    print(days_with_week[:10])
 
 
 '''
