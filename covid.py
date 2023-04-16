@@ -1,4 +1,5 @@
 import mysql.connector
+from weeks import get_week_number
 
 from decouple import config
 
@@ -36,16 +37,16 @@ def makeTable():
 def Send_Covid(data):
     cnx = mysql.connector.connect(**config)
     cursor = cnx.cursor()
-
-    sql = \
+    for _ in data:
+        sql = \
+            """
+        INSERT INTO daily_data (disease_name, date, disease_cases, disease_deaths, state) VALUES
+            (%s, %s, %s, %s, %s)
         """
-    INSERT INTO daily_data (disease_name, date, disease_cases, disease_deaths, state) VALUES
-        (%s, %s, %s, %s, %s)
-    """
 
-    val = (data[0], data[1], int(data[2]), int(data[3]), data[4])
-    cursor.execute(sql, val)
-    cnx.commit()
+        val = (_[0], _[1], int(_[2]), int(_[3]), _[4])
+        cursor.execute(sql, val)
+        cnx.commit()
 
     print(f"Covid Daily inserted.")
 
@@ -67,28 +68,34 @@ def runCovid():
         # disease_name, date, disease_cases, death, state
         temp = "covid", days[_][0], days[_][2], days[_][3], days[_][1]
         days[_] = list(temp)
+    days = days[1:]
 
     # Only me and god know how this works... now only god knows
-    previous = days[1][1]
-    temp = []
-    holder = []
-    holder.append(days[1])
-    for _ in range(2, len(days)):
-        current = days[_][1]
-        if current == previous:
-            holder.append(days[_])
-            continue
-        if current != previous:
-            temp.append(holder)
-            holder = []
-            if _ == len(days):
-                break
-            previous = days[_ + 1][1]
-    DataByDay = temp
+    # previous = days[1][1]
+    # temp = []
+    # holder = []
+    # holder.append(days[1])
+    # for _ in range(2, len(days)):
+    #     current = days[_][1]
+    #     if current == previous:
+    #         holder.append(days[_])
+    #         continue
+    #     if current != previous:
+    #         temp.append(holder)
+    #         holder = []
+    #         if _ == len(days):
+    #             break
+    #         previous = days[_ + 1][1]
+    # DataByDay = temp
+
+    for _ in days:
+        Send_Covid(_)
+        
 
     for _ in DataByDay:
         for __ in _:
-            Send_Covid(__)
+            week = get_week_number(__[1])
+            print(__[0], __[1][:4], week, __[2], __[3], __[4])
         print()
 
 
