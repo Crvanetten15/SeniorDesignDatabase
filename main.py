@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import sendtoSQL as s2Q
+from covid import buildCovid, covidTable
 import re
 
 list_of_regions = ['U.S. Residents, excluding U.S. Territories',
@@ -107,7 +108,6 @@ def runTuberculosis():
         s2Q.send(data, date[0], 'Tuberculosis')
 
 
-
 def runIndividual(url, name):
     data = parse_table(give_url(url), 1, 2)
     date = re.findall("2022-..", url)
@@ -116,17 +116,21 @@ def runIndividual(url, name):
 
 
 def buildDB():
+    # Creation of tables
     s2Q.makeTable()
+    covidTable()
+    # Creation of wonder tables
     runMeasles()
     runMalaria()
     runMumps()
     runPneumococcal()
     runCSyphilis()
     runTuberculosis()
+    # Initialize covid section
+    buildCovid()
 
 
-
-exit()
+buildDB()
 
 # s2Q.makeTable()
 
