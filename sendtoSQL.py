@@ -10,6 +10,7 @@ passwrd = config('PASSWRD')
 database = config('DATABASE')
 host = config('HOST')
 
+
 def send(data, date, name):
     '''
     THIS IS THE DATA YOU NEED TO UPDATE
@@ -32,10 +33,12 @@ def send(data, date, name):
         INSERT INTO weekly_data (disease_name, year, week, disease_cases, disease_deaths, state) VALUES
             (%s, %s, %s, %s, %s, %s)
         """
+        if type(_[1]) != int:
+            _[1] = _[1].replace(',','')
         year, week = map(int, date.split('-'))
-        if _[1] == 'NC':
+        if _[1] == 'NC' or _[1] == 'U' or _[1] == 'N':
             _[1] = 0
-        val = (name, year, week, _[1], 0, _[0])
+        val = (name, year, week, int(_[1]), 0, _[0])
         cursor.execute(sql, val)
         cnx.commit()
 
