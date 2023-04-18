@@ -21,7 +21,7 @@ def send(data, date, name):
         'password': f'{passwrd}',
         'host': f'{host}',
         'database': f'{database}',
-        'raise_on_warnings': True
+        'raise_on_warnings': False
     }
 
     cnx = mysql.connector.connect(**config)
@@ -31,10 +31,10 @@ def send(data, date, name):
         sql = \
             """
         INSERT INTO weekly_data (disease_name, year, week, disease_cases, disease_deaths, state) VALUES
-            (%s, %s, %s, %s, %s, %s)
+            (%s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE disease_cases = disease_cases, disease_deaths = disease_deaths; 
         """
         if type(_[1]) != int:
-            _[1] = _[1].replace(',','')
+            _[1] = _[1].replace(',', '')
         year, week = map(int, date.split('-'))
         if _[1] == 'NC' or _[1] == 'U' or _[1] == 'N':
             _[1] = 0
@@ -52,7 +52,7 @@ def makeTable():
         'password': f'{passwrd}',
         'host': f'{host}',
         'database': f'{database}',
-        'raise_on_warnings': True
+        'raise_on_warnings': False
     }
 
     cnx = mysql.connector.connect(**config)
@@ -61,28 +61,14 @@ def makeTable():
     # cursor.execute('DROP TABLE wondertables')
     cursor.execute(
         """
-        CREATE TABLE weekly_data (
+        CREATE TABLE IF NOT EXISTS weekly_data (
             disease_name VARCHAR(50) NOT NULL,
             year INT NOT NULL,
             week INT NOT NULL,
             disease_cases INT NOT NULL,
             disease_deaths INT NOT NULL,
-            state VARCHAR(50) NOT NULL
+            state VARCHAR(50) NOT NULL,
+            PRIMARY KEY (disease_name, year, week, state)
             );
         """)
     cnx.commit()
-
-    # cursor.execute(
-    #     """
-    #     INSERT INTO weekly_data (disease_name, year, week, disease_cases, state)
-    #     VALUES
-    #         ('COVID-19', 2022, 5, 100, 'California'),
-    #         ('COVID-19', 2022, 5, 50, 'New York'),
-    #         ('COVID-19', 2022, 6, 150, 'California'),
-    #         ('COVID-19', 2022, 6, 80, 'New York'),
-    #         ('Flu', 2023, 1, 200, 'California'),
-    #         ('Flu', 2023, 1, 100, 'New York'),
-    #         ('Flu', 2023, 2, 250, 'California'),
-    #         ('Flu', 2023, 2, 150, 'New York');
-    #     """)
-    # cnx.commit()

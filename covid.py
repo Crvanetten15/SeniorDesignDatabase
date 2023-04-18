@@ -11,7 +11,7 @@ config = {
     'password': f'{passwrd}',
     'host': f'{host}',
     'database': f'{database}',
-    'raise_on_warnings': True
+    'raise_on_warnings': False
 }
 
 
@@ -22,12 +22,13 @@ def covidTable():
     # cursor.execute('DROP TABLE wondertables')
     cursor.execute(
         """
-        CREATE TABLE daily_data (
+        CREATE TABLE IF NOT EXISTS daily_data (
             disease_name VARCHAR(50) NOT NULL,
             date DATE NOT NULL,
             disease_cases INT NOT NULL,
             disease_deaths INT NOT NULL,
-            state VARCHAR(50) NOT NULL
+            state VARCHAR(50) NOT NULL,
+            PRIMARY KEY (disease_name, date, state)
             );
         """)
     cnx.commit()
@@ -41,7 +42,7 @@ def Send_Covid_daily(data):
             sql = \
                 """
             INSERT INTO daily_data (disease_name, date, disease_cases, disease_deaths, state) VALUES
-                (%s, %s, %s, %s, %s)
+                (%s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE  disease_cases=disease_cases, disease_deaths=disease_deaths; 
             """
 
             val = (_[0], _[1], int(_[2]), int(_[3]), _[4])
@@ -59,7 +60,7 @@ def Send_Covid_Weekly(data):
             sql = \
                 """
             INSERT INTO weekly_data (disease_name, year, week, disease_cases, disease_deaths, state) VALUES
-                (%s, %s, %s, %s, %s, %s)
+                (%s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE  disease_cases=disease_cases, disease_deaths=disease_deaths; 
             """
 
             val = (__[0], __[1], int(__[2]), int(__[3]), __[4], __[5])

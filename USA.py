@@ -25,17 +25,18 @@ cnx = mysql.connector.connect(**config)
 cursor = cnx.cursor()
 
 cursor.execute(
-        """
-        CREATE TABLE population_data (
+    """
+        CREATE TABLE IF NOT EXISTS population_data (
             state VARCHAR(50) NOT NULL,
             population INT NOT NULL,
-            urban_population DOUBLE NOT NULL
+            urban_population DOUBLE NOT NULL,
+            PRIMARY KEY (state, population)
             );
         """)
 cnx.commit()
 
 usa_pop = []
-with open('population.csv', newline='') as csvfile:
+with open('CSV_DATA/population.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for x in reader:
         state = x["ï»¿Geographic Area"]
@@ -43,7 +44,7 @@ with open('population.csv', newline='') as csvfile:
         usa_pop.append([state, totals])
 
 urban_pop = []
-with open('urban_population.csv', newline='') as csvfile:
+with open('CSV_DATA/urban_population.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for x in reader:
         # print(x)
@@ -76,8 +77,8 @@ for _ in result:
     sql = \
         """
     INSERT INTO population_data (state, population, urban_population) VALUES
-        (%s, %s, %s)
+        (%s, %s, %s) ON DUPLICATE KEY UPDATE  urban_population=urban_population; 
     """
-    val = (_[0], int(_[1].replace(',','')), float(_[2]))
+    val = (_[0], int(_[1].replace(',', '')), float(_[2]))
     cursor.execute(sql, val)
     cnx.commit()
