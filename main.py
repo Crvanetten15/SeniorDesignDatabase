@@ -240,10 +240,10 @@ def CampylobacteriosisALL():
 
 
 def PneumococcalALL():
-    Pneumococcal(2019)
-    time.sleep(1)
-    Pneumococcal(2020)
-    time.sleep(1)
+    # Pneumococcal(2019)
+    # time.sleep(1)
+    # Pneumococcal(2020)
+    # time.sleep(1)
     Pneumococcal(2021)
     time.sleep(1)
     Pneumococcal(2022)
@@ -254,18 +254,66 @@ def PneumococcalALL():
 
 def buildDB():
     # Creation of tables
-    s2Q.makeTable()
-    covidTable()
+    # s2Q.makeTable()
+    # covidTable()
     # Creation of wonder tables
-    GonorrheaALL()
-    TuberculosisALL()
-    SyphilisALL()
-    MalariaALL()
-    CampylobacteriosisALL()
-    ChlamydiaALL()
+    # GonorrheaALL()
+    # TuberculosisALL()
+    # SyphilisALL()
+    # MalariaALL()
+    # CampylobacteriosisALL()
+    # ChlamydiaALL()
     PneumococcalALL()
     # Initialize covid section
     buildCovid()
 
 
-buildDB()
+# buildDB()
+
+
+def Malariap23(year):
+    for x in range(14, 18):
+        x = x if x >= 10 else f'0{x}'
+        url = f"https://wonder.cdc.gov/nndss/static/{year}/{x}/{year}-{x}-table860.html"
+        runIndividual(url, "malaria", year, [0, 1])
+
+def Gonorrheap23(year):
+    for x in range(14, 18):
+        x = x if x >= 10 else f'0{x}'
+        url = f"https://wonder.cdc.gov/nndss/static/{year}/{x}/{year}-{x}-table560.html"
+        runIndividual(url, "gonorrhea", year, [0, 1])
+
+def Tuberculosisp23(year):
+    for x in range(14, 18):
+        x = x if x >= 10 else f'0{x}'
+        url = f"https://wonder.cdc.gov/nndss/static/{year}/{x}/{year}-{x}-table1309.html"
+        runIndividual(url, "tuberculosis", year, [0, 1])
+
+def Syphilisp23(year):
+    for x in range(14, 18):
+        x = x if x >= 10 else f'0{x}'
+        url = f"https://wonder.cdc.gov/nndss/static/{year}/{x}/{year}-{x}-table1260.html"
+        runIndividual(url, "syphilis", year, [0, 1])
+
+def Campylobacteriosisp23(year):
+    for x in range(14, 18):
+        x = x if x >= 10 else f'0{x}'
+        url = f"https://wonder.cdc.gov/nndss/static/{year}/{x}/{year}-{x}-table350.html"
+        runIndividual(url, "campylobacteriosis", year, [0, 1])
+
+def Chlamydiap23(year):
+    for x in range(14, 18):
+        x = x if x >= 10 else f'0{x}'
+        url = f"https://wonder.cdc.gov/nndss/static/{year}/{x}/{year}-{x}-table370.html"
+        runIndividual(url, "chlamydia", year, [0, 1])
+
+def runPlaceHolder():
+    year = 2023
+    Malariap23(year)
+    Gonorrheap23(year)
+    Tuberculosisp23(year)
+    Syphilisp23(year)
+    Campylobacteriosisp23(year)
+    Chlamydiap23(year)
+
+runPlaceHolder()
