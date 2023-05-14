@@ -46,22 +46,22 @@ df = pandas.read_csv("preds.csv")
 df = df.drop(["ID"], axis=1)
 weeks = [14, 15, 16, 17]
 
-# for _ in range(len(df)):
-#     if (df["locality"][_] == "US"):
-#         continue
-#     totals = df["predictions"][_][2:-2].split()
-#     # print(len(totals))
-#     for i in range(len(totals)):
-#         totals[i] = float(totals[i])
-#         totals[i] = int(totals[i])
-#         if totals[i] <= -20:
-#             totals[i] = totals[i] * -1
-#         elif totals[i] <= 0:
-#             totals[i] = 0
+for _ in range(len(df)):
+    if (df["locality"][_] == "US"):
+        continue
+    totals = df["predictions"][_][2:-2].split()
+    # print(len(totals))
+    for i in range(len(totals)):
+        totals[i] = float(totals[i])
+        totals[i] = int(totals[i])
+        if totals[i] <= -20:
+            totals[i] = totals[i] * -1
+        elif totals[i] <= 0:
+            totals[i] = 0
 
-#     for y in range(len(totals)):
-#         send(df["disease_name"][_], 2023, weeks[y],
-#              totals[y],  df["locality"][_])
+    for y in range(len(totals)):
+        send(df["disease_name"][_], 2023, weeks[y],
+             totals[y],  df["locality"][_])
 
 
 def sendC(name, year, week, data, ):

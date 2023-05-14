@@ -82,6 +82,9 @@ The only file that your individually need to run is main.py.
 
 `python main.py`
 
+#### Integration with current ML pipeline
+For our database we do not have a specific pipeline created for our data to manually transfer for it to our remote server. This is manually added to the database using main2.py and the csv file provided from our ML python scripting. Once file is added as preds.csv under the current format, please run main2.py to transfer data into the database. 
+
 ### Diseases and their sources
 
 - Covid _[via NyTimes](https://github.com/nytimes/covid-19-data)_
